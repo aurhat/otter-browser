@@ -470,7 +470,7 @@ ActionsManager::ActionsManager(QObject *parent) : QObject(parent),
 	registerAction(BookmarkAllOpenPagesAction, QT_TRANSLATE_NOOP("actions", "Bookmark All Open Pages"));
 	registerAction(OpenBookmarkAction, QT_TRANSLATE_NOOP("actions", "Open Bookmark"));
 	registerAction(QuickBookmarkAccessAction, QT_TRANSLATE_NOOP("actions", "Quick Bookmark Access"));
-	registerAction(CookiesAction, QT_TRANSLATE_NOOP("actions", "Cookies"));
+	registerAction(CookiesAction, QT_TRANSLATE_NOOP("actions", "Cookies"), QString(), ThemesManager::getIcon(QLatin1String("cookies")));
 	registerAction(LoadPluginsAction, QT_TRANSLATE_NOOP("actions", "Load Plugins"), QString(), ThemesManager::getIcon(QLatin1String("preferences-plugin")));
 	registerAction(EnableJavaScriptAction, QT_TRANSLATE_NOOP("actions", "Enable JavaScript"), QString(), QIcon(), (IsEnabledFlag | IsCheckableFlag | IsCheckedFlag));
 	registerAction(EnableReferrerAction, QT_TRANSLATE_NOOP("actions", "Enable Referrer"), QString(), QIcon(), (IsEnabledFlag | IsCheckableFlag | IsCheckedFlag));
@@ -489,13 +489,13 @@ ActionsManager::ActionsManager(QObject *parent) : QObject(parent),
 	registerAction(ResetToolBarsAction, QT_TRANSLATE_NOOP("actions", "Reset to Defaults…"), QT_TRANSLATE_NOOP("actions", "Reset Toolbars to Defaults…"), QIcon(), IsEnabledFlag);
 	registerAction(OpenPanelAction, QT_TRANSLATE_NOOP("actions", "Open Panel as Tab"), QString(), ThemesManager::getIcon(QLatin1String("arrow-right")));
 	registerAction(ClosePanelAction, QT_TRANSLATE_NOOP("actions", "Close Panel"), QString(), ThemesManager::getIcon(QLatin1String("window-close")));
-	registerAction(ContentBlockingAction, QT_TRANSLATE_NOOP("actions", "Content Blocking…"));
+	registerAction(ContentBlockingAction, QT_TRANSLATE_NOOP("actions", "Content Blocking…"), QString(), ThemesManager::getIcon(QLatin1String("content-blocking")));
 	registerAction(HistoryAction, QT_TRANSLATE_NOOP("actions", "View History"), QString(), ThemesManager::getIcon(QLatin1String("view-history")));
 	registerAction(ClearHistoryAction, QT_TRANSLATE_NOOP("actions", "Clear History…"), QString(), ThemesManager::getIcon(QLatin1String("edit-clear-history")));
-	registerAction(AddonsAction, QT_TRANSLATE_NOOP("actions", "Addons"));
-	registerAction(NotesAction, QT_TRANSLATE_NOOP("actions", "Notes"));
-	registerAction(PasswordsAction, QT_TRANSLATE_NOOP("actions", "Passwords"));
-	registerAction(TransfersAction, QT_TRANSLATE_NOOP("actions", "Transfers"));
+	registerAction(AddonsAction, QT_TRANSLATE_NOOP("actions", "Addons"), QString(), ThemesManager::getIcon(QLatin1String("preferences-plugin")));
+	registerAction(NotesAction, QT_TRANSLATE_NOOP("actions", "Notes"), QString(), ThemesManager::getIcon(QLatin1String("notes")));
+	registerAction(PasswordsAction, QT_TRANSLATE_NOOP("actions", "Passwords"), QString(), ThemesManager::getIcon(QLatin1String("dialog-password")));
+	registerAction(TransfersAction, QT_TRANSLATE_NOOP("actions", "Transfers"), QString(), ThemesManager::getIcon(QLatin1String("transfers")));
 	registerAction(PreferencesAction, QT_TRANSLATE_NOOP("actions", "Preferences…"));
 	registerAction(WebsitePreferencesAction, QT_TRANSLATE_NOOP("actions", "Website Preferences…"));
 	registerAction(QuickPreferencesAction, QT_TRANSLATE_NOOP("actions", "Quick Preferences"));
