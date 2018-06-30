@@ -57,6 +57,7 @@
 #include <QtGui/QCloseEvent>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QMessageBox>
+#include <QProcess>
 
 namespace Otter
 {
@@ -454,15 +455,25 @@ void MainWindow::triggerAction(int identifier, const QVariantMap &parameters, Ac
 			return;
 		case ActionsManager::OpenAction:
 			{
-				const QString path(Utils::getOpenPaths().value(0));
+                const QString path(Utils::getOpenPaths().value(0));
 
-				if (!path.isEmpty())
+                if (!path.isEmpty())
 				{
 					triggerAction(ActionsManager::OpenUrlAction, {{QLatin1String("url"), QUrl::fromLocalFile(path)}}, trigger);
-				}
+                }
 			}
 
 			return;
+        case ActionsManager::ExecuteProgramAction:
+        {
+            QString program = "firefox";
+            QStringList arguments;
+            arguments << getUrl().toString();
+            QProcess myProcess;
+            myProcess.startDetached(program, arguments);
+        }
+
+        return;
 		case ActionsManager::PeekTabAction:
 		case ActionsManager::MaximizeTabAction:
 		case ActionsManager::MinimizeTabAction:

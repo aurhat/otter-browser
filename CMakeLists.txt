@@ -238,6 +238,7 @@ set(otter_src
 	src/modules/widgets/address/AddressWidget.cpp
 	src/modules/widgets/bookmark/BookmarkWidget.cpp
 	src/modules/widgets/configurationOption/ConfigurationOptionWidget.cpp
+	src/modules/widgets/executeProgram/ExecuteProgramWidget.cpp
 	src/modules/widgets/contentBlockingInformation/ContentBlockingInformationWidget.cpp
 	src/modules/widgets/errorConsole/ErrorConsoleWidget.cpp
 	src/modules/widgets/menuButton/MenuButtonWidget.cpp

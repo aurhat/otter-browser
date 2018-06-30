@@ -27,6 +27,7 @@
 #include "../modules/widgets/address/AddressWidget.h"
 #include "../modules/widgets/bookmark/BookmarkWidget.h"
 #include "../modules/widgets/configurationOption/ConfigurationOptionWidget.h"
+#include "../modules/widgets/executeProgram/ExecuteProgramWidget.h"
 #include "../modules/widgets/contentBlockingInformation/ContentBlockingInformationWidget.h"
 #include "../modules/widgets/errorConsole/ErrorConsoleWidget.h"
 #include "../modules/widgets/menuButton/MenuButtonWidget.h"
@@ -95,6 +96,22 @@ QWidget* createToolBarItem(const ToolBarsManager::ToolBarDefinition::Entry &defi
 	{
 		return new ConfigurationOptionWidget(window, definition, parent);
 	}
+
+    if (definition.action == QLatin1String("ExecuteProgramWidget"))
+    {
+        const int identifier(ActionsManager::getActionIdentifier(definition.action.left(definition.action.length() - 6)));
+
+        if (identifier >= 0)
+        {
+            ActionWidget *actionWidget(nullptr);
+
+            actionWidget = new ActionWidget(identifier, window, definition, parent);;
+
+            actionWidget->setOptions(definition.options);
+
+            return actionWidget;
+        }
+    }
 
 	if (definition.action == QLatin1String("ErrorConsoleWidget"))
 	{

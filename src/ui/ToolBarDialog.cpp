@@ -165,7 +165,7 @@ ToolBarDialog::ToolBarDialog(const ToolBarsManager::ToolBarDefinition &definitio
 	availableEntriesModel->appendRow(createEntry(QLatin1String("separator")));
 	availableEntriesModel->appendRow(createEntry(QLatin1String("spacer")));
 
-	const QStringList widgets({QLatin1String("CustomMenu"), QLatin1String("ClosedWindowsMenu"), QLatin1String("AddressWidget"), QLatin1String("ConfigurationOptionWidget"), QLatin1String("ContentBlockingInformationWidget"), QLatin1String("MenuButtonWidget"), QLatin1String("PanelChooserWidget"), QLatin1String("PrivateWindowIndicatorWidget"), QLatin1String("SearchWidget"), QLatin1String("SizeGripWidget"), QLatin1String("StatusMessageWidget"), QLatin1String("TransfersWidget"), QLatin1String("ZoomWidget")});
+    const QStringList widgets({QLatin1String("CustomMenu"), QLatin1String("ClosedWindowsMenu"), QLatin1String("AddressWidget"), QLatin1String("ConfigurationOptionWidget"), QLatin1String("ExecuteProgramWidget"), QLatin1String("ContentBlockingInformationWidget"), QLatin1String("MenuButtonWidget"), QLatin1String("PanelChooserWidget"), QLatin1String("PrivateWindowIndicatorWidget"), QLatin1String("SearchWidget"), QLatin1String("SizeGripWidget"), QLatin1String("StatusMessageWidget"), QLatin1String("TransfersWidget"), QLatin1String("ZoomWidget")});
 
 	for (int i = 0; i < widgets.count(); ++i)
 	{
@@ -406,6 +406,25 @@ void ToolBarDialog::editEntry()
 			}
 		});
 	}
+    else if (identifier == QLatin1String("ExecuteProgramWidget"))
+    {
+        OptionWidget *iconWidget(new OptionWidget({}, SettingsManager::IconType, &dialog));
+        iconWidget->setObjectName(QLatin1String("icon"));
+
+        OptionWidget *textWidget(new OptionWidget({}, SettingsManager::StringType, &dialog));
+        textWidget->setObjectName(QLatin1String("text"));
+
+        OptionWidget *valueWidget(new OptionWidget({}, SettingsManager::StringType, &dialog));
+        valueWidget->setObjectName(QLatin1String("value"));
+
+        iconWidget->setValue(options.value(QLatin1String("icon"), iconWidget->getDefaultValue()));
+        textWidget->setValue(options.value(QLatin1String("text"), textWidget->getDefaultValue()));
+        valueWidget->setValue(options.value(QLatin1String("value"), valueWidget->getDefaultValue()));
+
+        formLayout->addRow(tr("Icon:"), iconWidget);
+        formLayout->addRow(tr("Text:"), textWidget);
+        formLayout->addRow(tr("Program:"), valueWidget);
+    }
 	else if (identifier == QLatin1String("ContentBlockingInformationWidget") || identifier == QLatin1String("MenuButtonWidget") || identifier == QLatin1String("TransfersWidget") || identifier.startsWith(QLatin1String("bookmarks:")) || identifier.endsWith(QLatin1String("Action")) || identifier.endsWith(QLatin1String("Menu")))
 	{
 		OptionWidget *iconWidget(new OptionWidget({}, SettingsManager::IconType, &dialog));
@@ -566,6 +585,11 @@ QStandardItem* ToolBarDialog::createEntry(const QString &identifier, const QVari
 			item->setText(tr("Configuration Widget"));
 		}
 	}
+    else if (identifier == QLatin1String("ExecuteProgramWidget"))
+    {
+        item->setData(true, HasOptionsRole);
+        item->setText(tr("Execute Program Widget"));
+    }
 	else if (identifier == QLatin1String("ContentBlockingInformationWidget"))
 	{
 		item->setData(true, HasOptionsRole);

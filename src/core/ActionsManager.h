@@ -189,6 +189,7 @@ public:
 		RemoveHistoryIndexAction,
 		StopAction,
 		StopScheduledReloadAction,
+        ExecuteProgramAction,
 		StopAllAction,
 		ReloadAction,
 		ReloadOrStopAction,

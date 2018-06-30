@@ -317,6 +317,7 @@ ActionsManager::ActionsManager(QObject *parent) : QObject(parent),
 	registerAction(ReopenWindowAction, QT_TRANSLATE_NOOP("actions", "Reopen Previously Closed Window"), {}, {}, ActionDefinition::ApplicationScope, ActionDefinition::NoFlags);
 	registerAction(SessionsAction, QT_TRANSLATE_NOOP("actions", "Manage Sessions…"), {}, {}, ActionDefinition::ApplicationScope, (ActionDefinition::IsEnabledFlag | ActionDefinition::IsImmutableFlag));
 	registerAction(SaveSessionAction, QT_TRANSLATE_NOOP("actions", "Save Current Session…"), {}, {}, ActionDefinition::ApplicationScope, (ActionDefinition::IsEnabledFlag | ActionDefinition::IsImmutableFlag));
+	registerAction(ExecuteProgramAction, QT_TRANSLATE_NOOP("actions", "Execute Program"), {}, ThemesManager::createIcon(QLatin1String("arrow-down")), ActionDefinition::MainWindowScope);
 	registerAction(OpenUrlAction, QT_TRANSLATE_NOOP("actions", "Open URL"), {}, {}, ActionDefinition::MainWindowScope, ActionDefinition::RequiresParameters);
 	registerAction(OpenLinkAction, QT_TRANSLATE_NOOP("actions", "Open"), {}, ThemesManager::createIcon(QLatin1String("document-open")), ActionDefinition::WindowScope, ActionDefinition::IsEnabledFlag, ActionDefinition::LinkCategory);
 	registerAction(OpenLinkInCurrentTabAction, QT_TRANSLATE_NOOP("actions", "Open in This Tab"), {}, {}, ActionDefinition::WindowScope, (ActionDefinition::IsEnabledFlag | ActionDefinition::IsDeprecatedFlag), ActionDefinition::LinkCategory);
