@@ -23,6 +23,7 @@
 #include "../../../core/SessionsManager.h"
 #include "../../../core/Utils.h"
 #include "../../../ui/Menu.h"
+#include "../../../core/ThemesManager.h"
 
 #include <QtGui/QMouseEvent>
 
@@ -136,7 +137,7 @@ QIcon BookmarkWidget::getIcon() const
 {
 	const QVariantMap options(getOptions());
 
-	return ((isCustomized() && options.contains(QLatin1String("icon"))) ? options[QLatin1String("icon")].value<QIcon>() : m_bookmark->getIcon());
+	return ((isCustomized() && options.contains(QLatin1String("icon"))) ? ThemesManager::createIcon(options[QLatin1String("icon")].toString()) : m_bookmark->getIcon());
 }
 
 }
