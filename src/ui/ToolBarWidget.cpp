@@ -925,7 +925,7 @@ QMenu* ToolBarWidget::createCustomizationMenu(int identifier, QVector<QAction*> 
 
 	toolBarMenu->addSeparator();
 
-	QAction *removeAction(toolBarMenu->addAction(ThemesManager::createIcon(QLatin1String("list-remove")), tr("Remove…")));
+	QAction *removeAction(toolBarMenu->addAction(ThemesManager::createIcon(QLatin1String("list-remove")), tr("Remove this Toolbar…")));
 	removeAction->setData(identifier);
 	removeAction->setEnabled(!definition.canReset);
 
