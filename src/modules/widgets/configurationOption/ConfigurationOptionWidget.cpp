@@ -34,7 +34,7 @@ ConfigurationOptionWidget::ConfigurationOptionWidget(Window *window, const ToolB
 	m_optionWidget(nullptr),
 	m_window(window),
 	m_scope(WindowScope),
-	m_identifier(SettingsManager::getOptionIdentifier(definition.options.value(QLatin1String("optionName")).toString()))
+	m_identifier(SettingsManager::getOptionIdentifier(definition.options.value(QLatin1String("option")).toString()))
 {
 	QHBoxLayout *layout(new QHBoxLayout(this));
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -61,7 +61,7 @@ ConfigurationOptionWidget::ConfigurationOptionWidget(Window *window, const ToolB
 	}
 	else
 	{
-		text = definition.options.value(QLatin1String("optionName")).toString().section(QLatin1Char('/'), -1);
+		text = definition.options.value(QLatin1String("option")).toString().section(QLatin1Char('/'), -1);
 	}
 
 	layout->addWidget(new QLabel(text, this));

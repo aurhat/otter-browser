@@ -367,13 +367,13 @@ void ToolBarDialog::editEntry()
 	{
 		const QStringList choices(SettingsManager::getOptions());
 		OptionWidget *textWidget(new OptionWidget({}, SettingsManager::StringType, &dialog));
-		textWidget->setDefaultValue(options.value(QLatin1String("optionName"), choices.first()).toString().section(QLatin1Char('/'), -1));
+		textWidget->setDefaultValue(options.value(QLatin1String("option"), choices.first()).toString().section(QLatin1Char('/'), -1));
 		textWidget->setValue(options.value(QLatin1String("text"), textWidget->getDefaultValue()));
 		textWidget->setObjectName(QLatin1String("text"));
 
-		OptionWidget *optionNameWidget(new OptionWidget(options.value(QLatin1String("optionName")), SettingsManager::EnumerationType, &dialog));
-		optionNameWidget->setChoices(choices);
-		optionNameWidget->setObjectName(QLatin1String("optionName"));
+		OptionWidget *optionWidget(new OptionWidget(options.value(QLatin1String("option")), SettingsManager::EnumerationType, &dialog));
+		optionWidget->setChoices(choices);
+		optionWidget->setObjectName(QLatin1String("option"));
 
 		OptionWidget *scopeWidget(new OptionWidget(options.value(QLatin1String("scope")), SettingsManager::EnumerationType, &dialog));
 		scopeWidget->setChoices({{tr("Global"), QLatin1String("global"), {}}, {tr("Tab"), QLatin1String("window"), {}}});
@@ -381,14 +381,14 @@ void ToolBarDialog::editEntry()
 		scopeWidget->setObjectName(QLatin1String("scope"));
 
 		formLayout->addRow(tr("Text:"), textWidget);
-		formLayout->addRow(tr("Option:"), optionNameWidget);
+		formLayout->addRow(tr("Option:"), optionWidget);
 		formLayout->addRow(tr("Scope:"), scopeWidget);
 
-		connect(optionNameWidget, &OptionWidget::commitData, [&]()
+		connect(optionWidget, &OptionWidget::commitData, [&]()
 		{
 			const bool needsReset(textWidget->isDefault());
 
-			textWidget->setDefaultValue(optionNameWidget->getValue().toString().section(QLatin1Char('/'), -1));
+			textWidget->setDefaultValue(optionWidget->getValue().toString().section(QLatin1Char('/'), -1));
 
 			if (needsReset)
 			{
@@ -668,9 +668,9 @@ QMap<int, QVariant> ToolBarDialog::createEntryData(const QString &identifier, co
 	{
 		entryData[HasOptionsRole] = true;
 
-		if (options.contains(QLatin1String("optionName")) && !options.value("optionName").toString().isEmpty())
+		if (options.contains(QLatin1String("option")) && !options.value("option").toString().isEmpty())
 		{
-			entryData[Qt::DisplayRole] = tr("Configuration Widget (%1)").arg(options.value("optionName").toString());
+			entryData[Qt::DisplayRole] = tr("Configuration Widget (%1)").arg(options.value("option").toString());
 		}
 		else
 		{
