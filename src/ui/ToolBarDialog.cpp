@@ -153,7 +153,7 @@ ToolBarDialog::ToolBarDialog(const ToolBarsManager::ToolBarDefinition &definitio
 	availableEntriesModel->appendRow(createEntry(QLatin1String("separator")));
 	availableEntriesModel->appendRow(createEntry(QLatin1String("spacer")));
 
-	const QStringList widgets({QLatin1String("CustomMenu"), QLatin1String("ClosedWindowsMenu"), QLatin1String("AddressWidget"), QLatin1String("ConfigurationOptionWidget"), QLatin1String("ContentBlockingInformationWidget"), QLatin1String("MenuButtonWidget"), QLatin1String("PanelChooserWidget"), QLatin1String("PrivateWindowIndicatorWidget"), QLatin1String("SearchWidget"), QLatin1String("SizeGripWidget"), QLatin1String("StatusMessageWidget"), QLatin1String("TransfersWidget"), QLatin1String("ZoomWidget")});
+	const QStringList widgets({QLatin1String("CustomMenu"), QLatin1String("ClosedWindowsMenu"), QLatin1String("AddressWidget"), QLatin1String("ConfigurationOptionWidget"), QLatin1String("OptionMenu"), QLatin1String("ContentBlockingInformationWidget"), QLatin1String("MenuButtonWidget"), QLatin1String("PanelChooserWidget"), QLatin1String("PrivateWindowIndicatorWidget"), QLatin1String("SearchWidget"), QLatin1String("SizeGripWidget"), QLatin1String("StatusMessageWidget"), QLatin1String("TransfersWidget"), QLatin1String("ZoomWidget")});
 
 	for (int i = 0; i < widgets.count(); ++i)
 	{
@@ -363,7 +363,7 @@ void ToolBarDialog::editEntry()
 		formLayout->addRow(tr("Show search engine:"), searchEngineWidget);
 		formLayout->addRow(tr("Show search button:"), showSearchButtonWidget);
 	}
-	else if (identifier == QLatin1String("ConfigurationOptionWidget"))
+	else if (identifier == QLatin1String("ConfigurationOptionWidget") || identifier == QLatin1String("OptionMenu"))
 	{
 		const QStringList choices(SettingsManager::getOptions());
 		OptionWidget *textWidget(new OptionWidget({}, SettingsManager::StringType, &dialog));
@@ -699,6 +699,19 @@ QMap<int, QVariant> ToolBarDialog::createEntryData(const QString &identifier, co
 	else if (identifier == QLatin1String("OpenInApplicationMenu"))
 	{
 		entryData[Qt::DisplayRole] = tr("Open with");
+	}
+	else if (identifier == QLatin1String("OptionMenu"))
+	{
+		entryData[HasOptionsRole] = true;
+
+		if (options.contains(QLatin1String("option")) && !options.value("option").toString().isEmpty())
+		{
+			entryData[Qt::DisplayRole] = tr("Configuration Menu (%1)").arg(options.value("option").toString());
+		}
+		else
+		{
+			entryData[Qt::DisplayRole] = tr("Configuration Menu");
+		}
 	}
 	else if (identifier == QLatin1String("PanelChooserWidget"))
 	{
