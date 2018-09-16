@@ -133,6 +133,20 @@ void ToolButtonWidget::addMenu(Menu *menu, const QVector<ToolBarsManager::ToolBa
 			{
 				menu->addSeparator();
 			}
+			else if(entry.action == QLatin1String("OptionMenu") && entry.options.contains(QLatin1String("option")))
+			{
+				Menu *subMenu(new Menu(Menu::UnknownMenu, this));
+				QAction *subMenuAction(new QAction(menu));
+				subMenuAction->setMenu(subMenu);
+				subMenu->load(SettingsManager::getOptionIdentifier(entry.options[QLatin1String("option")].toString()));
+
+				if (entry.options.contains(QLatin1String("text")))
+				{
+					subMenu->setTitle(entry.options[QLatin1String("text")].toString());
+				}
+
+				menu->addAction(subMenuAction);
+			}
 			else
 			{
 				menu->addAction(new Action(ActionsManager::getActionIdentifier(entry.action), entry.parameters, entry.options, executor, menu));
