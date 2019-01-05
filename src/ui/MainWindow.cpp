@@ -1126,13 +1126,11 @@ void MainWindow::triggerAction(int identifier, const QVariantMap &parameters, Ac
 			{
 				if (isFullScreen())
 				{
-					showNormal();
-					restoreWindowState();
+					setWindowState(windowState() & ~Qt::WindowFullScreen);
 				}
 				else
 				{
-					storeWindowState();
-					showFullScreen();
+					setWindowState(windowState() | Qt::WindowFullScreen);
 				}
 
 				QHash<quint64, Window*>::const_iterator iterator;
