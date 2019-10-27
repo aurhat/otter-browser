@@ -303,9 +303,11 @@ void WorkspaceWidget::createMdi()
 	}
 
 	const QList<Window*> windows(findChildren<Window*>());
-
-	for (int i = 0; i < windows.count(); ++i)
+	const QList<QMdiSubWindow*> subWindows(m_mdi->subWindowList());
+qDebug() << "liczba1" << windows.count() << subWindows.count();
+	for (int i = 0; i < windows.count() - 1; ++i)
 	{
+		//qDebug() << "WorkspaceWidget.cpp" << windows.at(i)->getTitle();
 		windows.at(i)->setVisible(true);
 
 		addWindow(windows.at(i));
@@ -325,6 +327,8 @@ void WorkspaceWidget::triggerAction(int identifier, const QVariantMap &parameter
 	const bool hasSpecifiedWindow(parameters.contains(QLatin1String("tab")));
 	Window *window(hasSpecifiedWindow ? m_mainWindow->getWindowByIdentifier(parameters[QLatin1String("tab")].toULongLong()) : nullptr);
 
+//const QList<QMdiSubWindow*> subWindows(m_mdi->subWindowList());
+//qDebug() << "liczba" << subWindows.count();
 	if (identifier == ActionsManager::PeekTabAction)
 	{
 		if (m_peekedWindow == window)
@@ -369,11 +373,12 @@ void WorkspaceWidget::triggerAction(int identifier, const QVariantMap &parameter
 		case ActionsManager::MaximizeTabAction:
 			if (subWindow)
 			{
+				//qDebug() << "ok" << subWindow->getWindow()->getTitle() << "nieok" << m_activeWindow->getTitle();
 				subWindow->setWindowFlags(Qt::SubWindow | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
 				subWindow->showMaximized();
 				subWindow->storeState();
 
-				setActiveWindow(m_activeWindow, true);
+				setActiveWindow(m_peekedWindow, true);
 			}
 
 			break;
@@ -404,7 +409,7 @@ void WorkspaceWidget::triggerAction(int identifier, const QVariantMap &parameter
 				subWindow->showNormal();
 				subWindow->storeState();
 
-				setActiveWindow(m_activeWindow, true);
+				setActiveWindow(m_peekedWindow, true);
 			}
 
 			break;
@@ -427,7 +432,7 @@ void WorkspaceWidget::triggerAction(int identifier, const QVariantMap &parameter
 				disconnect(m_mdi, &MdiWidget::subWindowActivated, this, &WorkspaceWidget::handleActiveSubWindowChanged);
 
 				const QList<QMdiSubWindow*> subWindows(m_mdi->subWindowList());
-
+				qDebug() << "maxliczba" << subWindows.count();
 				for (int i = 0; i < subWindows.count(); ++i)
 				{
 					MdiWindow *mdiWindow(qobject_cast<MdiWindow*>(subWindows.at(i)));
@@ -448,16 +453,20 @@ void WorkspaceWidget::triggerAction(int identifier, const QVariantMap &parameter
 			break;
 		case ActionsManager::MinimizeAllAction:
 			{
+				QMdiSubWindow *activeWindow(m_mdi->currentSubWindow());
+
 				disconnect(m_mdi, &MdiWidget::subWindowActivated, this, &WorkspaceWidget::handleActiveSubWindowChanged);
 
 				const QList<QMdiSubWindow*> subWindows(m_mdi->subWindowList());
 
+				qDebug() <<  "miniall_liczba" << subWindows.count();
 				for (int i = 0; i < subWindows.count(); ++i)
 				{
 					MdiWindow *mdiWindow(qobject_cast<MdiWindow*>(subWindows.at(i)));
 
 					if (mdiWindow)
 					{
+						qDebug() << "minimizeall" << mdiWindow->getWindow()->getTitle();
 						mdiWindow->storeState();
 						mdiWindow->setWindowFlags(Qt::SubWindow);
 						mdiWindow->showMinimized();
@@ -466,7 +475,9 @@ void WorkspaceWidget::triggerAction(int identifier, const QVariantMap &parameter
 
 				connect(m_mdi, &MdiWidget::subWindowActivated, this, &WorkspaceWidget::handleActiveSubWindowChanged);
 
-				m_mainWindow->setActiveWindowByIdentifier(0);
+				//m_mainWindow->setActiveWindowByIdentifier(0);
+				//qDebug() << "aktywne" << m_activeWindow->getTitle();
+				m_mdi->setActiveSubWindow(activeWindow);
 			}
 
 			break;
@@ -533,10 +544,12 @@ void WorkspaceWidget::addWindow(Window *window, const Session::Window::State &st
 	if (!m_mdi && (state.state != Qt::WindowMaximized || state.geometry.isValid()))
 	{
 		createMdi();
+		//return;
 	}
 
 	if (m_mdi)
 	{
+		qDebug() << "addwindow2" << window->getTitle();
 		disconnect(m_mdi, &MdiWidget::subWindowActivated, this, &WorkspaceWidget::handleActiveSubWindowChanged);
 
 		ActionExecutor::Object mainWindowExecutor(m_mainWindow, m_mainWindow);
@@ -562,7 +575,7 @@ void WorkspaceWidget::addWindow(Window *window, const Session::Window::State &st
 		mdiWindow->show();
 		mdiWindow->lower();
 		mdiWindow->setSystemMenu(menu);
-
+		//qDebug() << window->getTitle();
 		switch (state.state)
 		{
 			case Qt::WindowMaximized:
@@ -617,6 +630,7 @@ void WorkspaceWidget::addWindow(Window *window, const Session::Window::State &st
 	}
 	else
 	{
+		qDebug() << "addwindow3" << window->getTitle();
 		window->hide();
 		window->move(0, 0);
 	}
@@ -635,6 +649,7 @@ void WorkspaceWidget::handleActiveSubWindowChanged(QMdiSubWindow *subWindow)
 
 		if (window && window->isActive())
 		{
+			qDebug() << "test" << window->getTitle();
 			m_mainWindow->setActiveWindowByIdentifier(window->getIdentifier());
 		}
 	}
@@ -712,6 +727,7 @@ void WorkspaceWidget::setActiveWindow(Window *window, bool force)
 			}
 
 			m_mdi->setActiveSubWindow(subWindow);
+			qDebug() << "active window";// << getActiveWindow()->getTitle();
 		}
 		else
 		{
